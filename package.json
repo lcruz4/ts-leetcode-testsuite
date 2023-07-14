@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "lc": "ts-node ./src/leetcode/index.ts",
+    "debug": "ts-node ./src/scripts/debug.ts"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^8.0.0",
+    "@types/node": "^20.4.1",
+    "inquirer": "^8.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.1.6"
+  }
+}
