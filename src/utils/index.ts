@@ -1,1 +1,1 @@
-export { default as log } from './coloredLog';
+export { default as log } from "./coloredLog";

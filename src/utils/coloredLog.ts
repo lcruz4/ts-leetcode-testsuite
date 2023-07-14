@@ -1,4 +1,4 @@
-type Color = 'yellow' | 'red' | 'green' | 'teal' | 'white';
+type Color = "yellow" | "red" | "green" | "teal" | "white";
 
 const coloredLog = (str: string, color?: Color) => {
   let colorCode = "\x1b[33;1m";
