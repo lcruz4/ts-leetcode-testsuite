@@ -52,3 +52,13 @@ The third argument can also be `write` which will write the output of your solut
 
 ## How to debug
 Simply use the debug feature through vscode. You should see the option `ts-node debugger` automatically. It will bring up a prompt in the terminal asking you which problem, test suite, and any options you want. You can set breakpoints in your solution and step through the code. You can also use the `debugger` keyword in your solution to set breakpoints.
+
+## Adding multiple arguments in input#.json
+To add multiple arguments in your input#.json, set your json like so
+```
+{
+    "arg1": ...,
+    "arg2": ...,
+}
+```
+if input file is an object with at least an arg1 key, it will send each key as a positional argument to your solution.

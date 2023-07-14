@@ -46,8 +46,12 @@ const trunc = (str: string): string => {
           log(`Test case ${inputInd}:`, 'teal');
           log(`Input: ${trunc(JSON.stringify(input))}`, 'yellow');
 
+          let args = [input];
+          if (input && typeof input === 'object' && Object.keys(input).indexOf('arg1') >= 0) {
+            args = Object.keys(input).map(key => input[key]);
+          }
           const start = performance.now();
-          const ans = solution(input);
+          const ans = solution(...args);
           const end = performance.now();
           const strAns = JSON.stringify(ans);
           const strOutput = JSON.stringify(output);
