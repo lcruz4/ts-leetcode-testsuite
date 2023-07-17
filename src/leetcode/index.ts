@@ -1,21 +1,21 @@
-import { readdirSync, writeFileSync } from "fs";
-import { resolve } from "path";
-import { log, withParamTransformer } from "@utils";
+import { readdirSync, writeFileSync } from 'fs';
+import { resolve } from 'path';
+import { log, withParamTransformer } from '@utils';
 
 const trunc = (str: string): string => {
   const truncStr = str.slice(0, 200);
-  return truncStr + (truncStr.length !== str.length ? "..." : "");
+  return truncStr + (truncStr.length !== str.length ? '...' : '');
 };
 
 (async () => {
   const problem = process.argv[2];
   const testInd = parseInt(process.argv[3]);
-  const writeOutput = process.argv[4] === "write";
-  const timeOnly = process.argv[3] === "time" || process.argv[4] === "time";
+  const writeOutput = process.argv[4] === 'write';
+  const timeOnly = process.argv[3] === 'time' || process.argv[4] === 'time';
   const problemDirs = readdirSync(resolve(__dirname));
 
   if (!problem) {
-    log("Please specify problem such as p11", "red");
+    log('Please specify problem such as p11', 'red');
     return;
   }
 
@@ -25,19 +25,19 @@ const trunc = (str: string): string => {
       let test, solution;
 
       const { default: index } = await import(
-        resolve(__dirname, problemDir, "index.ts")
+        resolve(__dirname, problemDir, 'index.ts')
       );
       solution = index;
 
       try {
         const { default: testFn } = await import(
-          resolve(__dirname, problemDir, "test.ts")
+          resolve(__dirname, problemDir, 'test.ts')
         );
         test = testFn;
       } catch (e) {}
 
       for (const file of pFiles) {
-        if (file.startsWith("input" + (testInd || ""))) {
+        if (file.startsWith('input' + (testInd || ''))) {
           const inputInd = file.match(/\d+/)?.[0];
           const { default: input } = await import(
             resolve(__dirname, problemDir, file)
@@ -57,14 +57,14 @@ const trunc = (str: string): string => {
             );
             paramTransformer = paramTransformerDefault;
           } catch (e) {}
-          log(`Test case ${inputInd}:`, "teal");
-          log(`Input: ${trunc(JSON.stringify(input))}`, "yellow");
+          log(`Test case ${inputInd}:`, 'teal');
+          log(`Input: ${trunc(JSON.stringify(input))}`, 'yellow');
 
           let args = [input];
           if (
             input &&
-            typeof input === "object" &&
-            Object.keys(input).indexOf("arg1") >= 0
+            typeof input === 'object' &&
+            Object.keys(input).indexOf('arg1') >= 0
           ) {
             args = Object.keys(input).map((key) => input[key]);
           }
@@ -89,7 +89,7 @@ const trunc = (str: string): string => {
                   `Answer: ${trunc(strAns)} is incorrect!\nExpected: ${trunc(
                     strOutput,
                   )}\nSolution finished in ${end - start}ms`,
-                  "red",
+                  'red',
                 );
                 return;
               }
@@ -104,7 +104,7 @@ const trunc = (str: string): string => {
             `Answer: ${trunc(strAns)}\nSolution finished in ${(
               end - start
             ).toFixed(3)}ms`,
-            "green",
+            'green',
           );
         }
       }
@@ -112,5 +112,5 @@ const trunc = (str: string): string => {
     }
   }
 
-  log(`Problem ${problem} not found`, "red");
+  log(`Problem ${problem} not found`, 'red');
 })();
