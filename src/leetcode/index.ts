@@ -1,6 +1,6 @@
 import { readdirSync, writeFileSync } from "fs";
 import { resolve } from "path";
-import { log } from "@utils";
+import { log, withParamTransformer } from "@utils";
 
 const trunc = (str: string): string => {
   const truncStr = str.slice(0, 200);
@@ -22,11 +22,12 @@ const trunc = (str: string): string => {
   for (const problemDir of problemDirs) {
     if (problem === problemDir) {
       const pFiles = readdirSync(resolve(__dirname, problemDir));
-      let test;
+      let test, solution;
 
-      const { default: solution } = await import(
+      const { default: index } = await import(
         resolve(__dirname, problemDir, "index.ts")
       );
+      solution = index;
 
       try {
         const { default: testFn } = await import(
@@ -42,13 +43,19 @@ const trunc = (str: string): string => {
             resolve(__dirname, problemDir, file)
           );
           const outputFilename = `output${inputInd}.json`;
-          let output;
+          let output, paramTransformer;
 
           try {
             const { default: outputJson } = await import(
               resolve(__dirname, problemDir, outputFilename)
             );
             output = outputJson;
+          } catch (e) {}
+          try {
+            const { default: paramTransformerDefault } = await import(
+              resolve(__dirname, problemDir, 'paramTransformer.ts')
+            );
+            paramTransformer = paramTransformerDefault;
           } catch (e) {}
           log(`Test case ${inputInd}:`, "teal");
           log(`Input: ${trunc(JSON.stringify(input))}`, "yellow");
@@ -60,6 +67,10 @@ const trunc = (str: string): string => {
             Object.keys(input).indexOf("arg1") >= 0
           ) {
             args = Object.keys(input).map((key) => input[key]);
+          }
+
+          if (paramTransformer) {
+            solution = withParamTransformer(paramTransformer, solution);
           }
           const start = performance.now();
           const ans = solution(...args);

@@ -74,3 +74,11 @@ To add multiple arguments in your input#.json, set your json like so
 ```
 
 if input file is an object with at least an arg1 key, it will send each key as a positional argument to your solution.
+
+## Param Transformer
+
+Some problems require you to define a data structure and that data structure is used as the input. In order to support this you can create a `paramTransformer.ts` file in the problem directory. This file should default export a function that takes in the input as it's native type such as an array, and returns the params as the type that is actually needed in the solution as **an array**.
+
+Example: problem 23 takes an array of `ListNode`s as input. The input, however, is represented as a `number[][]`. Note also that the problem gives you the class definition for a ListNode. You'll need to define the `ListNode` class somewhere, so it is recommended to also create an `extra.ts` file whenever there is extra code that is not needed in your solution. You can define `ListNode` in `extra.ts` and export it. You can then import it in a file called `paramTransformer.ts` and use it to convert the `number[][]` to a `ListNode[]`. When you run this problem it will automatically use the paramTransformer to give the correct input to your solution function.
+
+Also see `src/leetcode/example/paramTransformer.ts` for a trivial example.
