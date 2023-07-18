@@ -16,6 +16,7 @@ This is a suite for running leetcode problems in typescript. It's meant to be a 
 │   │   │   └── input2.json
 │   │   │   └── output1.json
 │   │   │   └── output2.json
+│   │   │   └── paramTransformer.ts
 │   │   │   └── test.ts
 │   │   └── index.ts
 │   └── utils
@@ -37,6 +38,10 @@ This is a suite for running leetcode problems in typescript. It's meant to be a 
    - these are optional and the number corresponds to the input file number
 5. Create a new file in the folder called `test.ts` this should export a test suite for your solution
    - this file is optional when simply comparing the output of your solution and your output file won't work (i.e. if the solution is an array that doesn't have a defined order)
+6. Create a new file in the folder called `paramTransformer.ts` this should export a function that takes in the input as it's native type such as an array, and returns the params as the type that is actually needed in the solution as **an array**.
+   - this file is optional and only needed when the input is not in the correct format for your solution
+   - if `paramTransformer` does not return the transformed arguments as an array it will not work. This was done in order to support multiple arguments
+   - see the section on paramTransformer for more info
 
 ## How to run
 
