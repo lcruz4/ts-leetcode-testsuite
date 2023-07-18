@@ -1,5 +1,5 @@
 import { writeFileSync } from 'fs';
-import { importDefault, log, trunc, withParamTransformer } from '@utils';
+import { importDefault, log, trunc, truncNestedObject, withParamTransformer } from '@utils';
 
 export const handleArgs = () => {
   const problem = process.argv[2];
@@ -28,7 +28,9 @@ export const prepTestCase = async ({
   const input = await importDefault(`${dirName}/${file}`);
   const outputFilename = `output${inputInd}.json`;
   const output = await importDefault(`${dirName}/${outputFilename}`);
-  const paramTransformer = await importDefault(`${dirName}/paramTransformer.ts`);
+  const paramTransformer = await importDefault(
+    `${dirName}/paramTransformer.ts`,
+  );
 
   log(`Test case ${inputInd}:`, 'teal');
   log(`Input: ${trunc(JSON.stringify(input))}`, 'yellow');
@@ -81,7 +83,7 @@ export const trySolution = ({
   const start = performance.now();
   const ans = solution(...args);
   const end = performance.now();
-  const strAns = JSON.stringify(ans);
+  const strAns = JSON.stringify(truncNestedObject(ans));
   const strOutput = JSON.stringify(output);
 
   if (!timeOnly) {
